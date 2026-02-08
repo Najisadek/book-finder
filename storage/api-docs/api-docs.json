@@ -112,6 +112,31 @@
                                 }
                             }
                         }
+                    },
+                    "429": {
+                        "description": "Too many login attempts - Rate limit exceeded",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Too many login attempts. Please try again later."
+                                        },
+                                        "retry_after": {
+                                            "description": "Seconds until next attempt is allowed",
+                                            "type": "integer",
+                                            "example": 60
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 }
             }

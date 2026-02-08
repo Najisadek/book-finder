@@ -65,6 +65,17 @@ final class LoginController extends ApiController
             ]
         )
     )]
+    #[OA\Response(
+        response: 429,
+        description: "Too many login attempts - Rate limit exceeded",
+        content: new OA\JsonContent(
+            properties: [
+                new OA\Property(property: "success", type: "boolean", example: false),
+                new OA\Property(property: "message", type: "string", example: "Too many login attempts. Please try again later."),
+                new OA\Property(property: "retry_after", type: "integer", example: 60, description: "Seconds until next attempt is allowed")
+            ]
+        )
+    )]
     public function __invoke(LoginRequest $request): JsonResponse
     {
         $user = User::where('email', $request->email)->first();
