@@ -19,7 +19,7 @@
                 ],
                 "summary": "Login user",
                 "description": "Authenticate user and return token",
-                "operationId": "15da625cb2b23dece5cdb8d83a14cbca",
+                "operationId": "6f3ae5400d9e3b3873b80aec3cd380aa",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -148,7 +148,7 @@
                 ],
                 "summary": "Logout user",
                 "description": "Revoke current user token",
-                "operationId": "c6ae02fe979acf8b2c9cee4882da7845",
+                "operationId": "13f30b03aaada3f0c3ad6b78514358c6",
                 "responses": {
                     "200": {
                         "description": "Logged out successfully",
@@ -188,7 +188,7 @@
                 ],
                 "summary": "Register a new user",
                 "description": "Register a new user and return authentication token",
-                "operationId": "f9ce207575981cd2a8a300e21800becd",
+                "operationId": "3ba4a397dd7cb9e9c0e5c92aa3d95337",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -278,9 +278,858 @@
                     }
                 }
             }
+        },
+        "/v1/books/import": {
+            "post": {
+                "tags": [
+                    "Books"
+                ],
+                "summary": "Import a book from Google Books only for admin",
+                "description": "Import a book into the local database using its Google Books ID. If the book already exists, returns the existing record.",
+                "operationId": "1d4eae098997923f5aaf0db4a1ef564b",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "google_books_id"
+                                ],
+                                "properties": {
+                                    "google_books_id": {
+                                        "description": "Google Books unique identifier",
+                                        "type": "string",
+                                        "example": "zyTCAlFPjgYC"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Book already exists in database",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Book already exists in database"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "book": {
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "integer",
+                                                            "example": 1
+                                                        },
+                                                        "google_books_id": {
+                                                            "type": "string",
+                                                            "example": "zyTCAlFPjgYC"
+                                                        },
+                                                        "title": {
+                                                            "type": "string",
+                                                            "example": "The Google Story"
+                                                        },
+                                                        "author": {
+                                                            "type": "string",
+                                                            "example": "David A. Vise"
+                                                        },
+                                                        "isbn": {
+                                                            "type": "string",
+                                                            "example": "9780553804577"
+                                                        },
+                                                        "cover_url": {
+                                                            "type": "string",
+                                                            "example": "http://books.google.com/books/content?id=zyTCAlFPjgYC&printsec=frontcover&img=1&zoom=1"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "201": {
+                        "description": "Book imported successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Book imported successfully from Google Books"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "book": {
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "integer",
+                                                            "example": 1
+                                                        },
+                                                        "google_books_id": {
+                                                            "type": "string",
+                                                            "example": "zyTCAlFPjgYC"
+                                                        },
+                                                        "title": {
+                                                            "type": "string",
+                                                            "example": "The Google Story"
+                                                        },
+                                                        "author": {
+                                                            "type": "string",
+                                                            "example": "David A. Vise"
+                                                        },
+                                                        "isbn": {
+                                                            "type": "string",
+                                                            "example": "9780553804577"
+                                                        },
+                                                        "cover_url": {
+                                                            "type": "string",
+                                                            "example": "http://books.google.com/books/content?id=zyTCAlFPjgYC&printsec=frontcover&img=1&zoom=1"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Book not found in Google Books API",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Book not found in Google Books API"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The given data was invalid."
+                                        },
+                                        "errors": {
+                                            "type": "object",
+                                            "example": {
+                                                "google_books_id": [
+                                                    "The google books id field is required."
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Failed to import book",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Failed to import book"
+                                        },
+                                        "errors": {
+                                            "properties": {
+                                                "error": {
+                                                    "type": "string",
+                                                    "example": "An unexpected error occurred"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/v1/books": {
+            "get": {
+                "tags": [
+                    "Books"
+                ],
+                "summary": "Get all books",
+                "description": "Retrieve a paginated list of all books in the database",
+                "operationId": "dea0f665f32a4d7904ab4c851e46b98b",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number for pagination",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1,
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Number of items per page (max 50)",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 10,
+                            "maximum": 50,
+                            "minimum": 1,
+                            "example": 10
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Books retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Books retrieved successfully"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "books": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "integer",
+                                                                "example": 1
+                                                            },
+                                                            "google_books_id": {
+                                                                "type": "string",
+                                                                "example": "zyTCAlFPjgYC"
+                                                            },
+                                                            "title": {
+                                                                "type": "string",
+                                                                "example": "The Google Story"
+                                                            },
+                                                            "author": {
+                                                                "type": "string",
+                                                                "example": "David A. Vise"
+                                                            },
+                                                            "isbn": {
+                                                                "type": "string",
+                                                                "example": "9780553804577"
+                                                            },
+                                                            "cover_url": {
+                                                                "type": "string",
+                                                                "example": "http://books.google.com/books/content?id=zyTCAlFPjgYC&printsec=frontcover&img=1&zoom=1"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                },
+                                                "total_items": {
+                                                    "type": "integer",
+                                                    "example": 100
+                                                },
+                                                "current_page": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "per_page": {
+                                                    "type": "integer",
+                                                    "example": 10
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/v1/books/search": {
+            "get": {
+                "tags": [
+                    "Books"
+                ],
+                "summary": "Search books in Google Books only for admin",
+                "description": "Search for books using the Google Books API. Returns paginated results.",
+                "operationId": "9f1a10213d493b6776d061a7bc987da6",
+                "parameters": [
+                    {
+                        "name": "query",
+                        "in": "query",
+                        "description": "Search query (book title, author, ISBN, etc.)",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "Harry Potter"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number for pagination",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1,
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Number of items per page",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 10,
+                            "maximum": 40,
+                            "minimum": 1,
+                            "example": 10
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Books retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Books retrieved successfully"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "books": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "google_books_id": {
+                                                                "type": "string",
+                                                                "example": "zyTCAlFPjgYC"
+                                                            },
+                                                            "title": {
+                                                                "type": "string",
+                                                                "example": "The Google Story"
+                                                            },
+                                                            "author": {
+                                                                "type": "string",
+                                                                "example": "David A. Vise"
+                                                            },
+                                                            "isbn": {
+                                                                "type": "string",
+                                                                "example": "9780553804577"
+                                                            },
+                                                            "cover_url": {
+                                                                "type": "string",
+                                                                "example": "http://books.google.com/books/content?id=zyTCAlFPjgYC&printsec=frontcover&img=1&zoom=1"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                },
+                                                "total_items": {
+                                                    "type": "integer",
+                                                    "example": 1234
+                                                },
+                                                "current_page": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "per_page": {
+                                                    "type": "integer",
+                                                    "example": 10
+                                                },
+                                                "query": {
+                                                    "type": "string",
+                                                    "example": "Harry Potter"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No books found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "No books found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The given data was invalid."
+                                        },
+                                        "errors": {
+                                            "type": "object",
+                                            "example": {
+                                                "query": [
+                                                    "The query field is required."
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/v1/favorites/destroy/{book}": {
+            "delete": {
+                "tags": [
+                    "Favorites"
+                ],
+                "summary": "Remove book from favorites",
+                "description": "Remove a book from the authenticated user's favorites list",
+                "operationId": "1a3a5b562a8eb3dc78d9a81e1a645fe6",
+                "parameters": [
+                    {
+                        "name": "book",
+                        "in": "path",
+                        "description": "Book ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Book removed from favorites successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Book removed from favorites"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Book not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Book not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/v1/favorites": {
+            "get": {
+                "tags": [
+                    "Favorites"
+                ],
+                "summary": "Get user's favorite books",
+                "description": "Retrieve a paginated list of the authenticated user's favorite books",
+                "operationId": "584c9166d77852d8f223d743272d6f7e",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number for pagination",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1,
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Number of items per page (max 50)",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 10,
+                            "maximum": 50,
+                            "minimum": 1,
+                            "example": 10
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Favorite books retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Favorite books retrieved successfully"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "books": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "integer",
+                                                                "example": 1
+                                                            },
+                                                            "google_books_id": {
+                                                                "type": "string",
+                                                                "example": "zyTCAlFPjgYC"
+                                                            },
+                                                            "title": {
+                                                                "type": "string",
+                                                                "example": "The Google Story"
+                                                            },
+                                                            "author": {
+                                                                "type": "string",
+                                                                "example": "David A. Vise"
+                                                            },
+                                                            "isbn": {
+                                                                "type": "string",
+                                                                "example": "9780553804577"
+                                                            },
+                                                            "cover_url": {
+                                                                "type": "string",
+                                                                "example": "http://books.google.com/books/content?id=zyTCAlFPjgYC&printsec=frontcover&img=1&zoom=1"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                },
+                                                "total_items": {
+                                                    "type": "integer",
+                                                    "example": 25
+                                                },
+                                                "current_page": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "per_page": {
+                                                    "type": "integer",
+                                                    "example": 10
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/v1/favorites/store/{book}": {
+            "post": {
+                "tags": [
+                    "Favorites"
+                ],
+                "summary": "Add book to favorites",
+                "description": "Add a book to the authenticated user's favorites list",
+                "operationId": "fcdba2ab5e9c815e67c07d15f5c2c909",
+                "parameters": [
+                    {
+                        "name": "book",
+                        "in": "path",
+                        "description": "Book ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Book added to favorites or already in favorites",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Book added to favorites"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "book_id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Book not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Book not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
         }
     },
     "components": {
+        "schemas": {
+            "ErrorResponse": {
+                "description": "Generic error response",
+                "properties": {
+                    "success": {
+                        "type": "boolean",
+                        "example": false
+                    },
+                    "message": {
+                        "type": "string",
+                        "example": "An error occurred"
+                    }
+                },
+                "type": "object"
+            },
+            "TooManyRequestsResponse": {
+                "description": "Rate limit exceeded response",
+                "properties": {
+                    "success": {
+                        "type": "boolean",
+                        "example": false
+                    },
+                    "message": {
+                        "type": "string",
+                        "example": "Too many login attempts. Please try again later."
+                    },
+                    "retry_after": {
+                        "type": "integer",
+                        "example": 60
+                    }
+                },
+                "type": "object"
+            }
+        },
         "securitySchemes": {
             "bearerAuth": {
                 "type": "http",
@@ -293,6 +1142,14 @@
         {
             "name": "Authentication",
             "description": "Authentication endpoints"
+        },
+        {
+            "name": "Books",
+            "description": "Book management endpoints"
+        },
+        {
+            "name": "Favorites",
+            "description": "User favorites management endpoints"
         }
     ]
 }

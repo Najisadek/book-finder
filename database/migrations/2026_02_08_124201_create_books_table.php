@@ -12,10 +12,11 @@ return new class extends Migration
     {
         Schema::create('books', function (Blueprint $table) {
             $table->id();
+            $table->string('google_books_id');
             $table->string('title');
             $table->string('author');
             $table->string('isbn')->unique()->nullable();
-            $table->string('cover_url')->nullable();
+            $table->text('cover_url')->nullable();
             $table->timestamps();
         });
     }

@@ -44,8 +44,25 @@ final class User extends Authenticatable
         );
     }
 
-    public function books(): BelongsToMany
+    public function favoriteBooks(): BelongsToMany
     {
-        return $this->belongsToMany(Book::class, 'user_book');
+        return $this->belongsToMany(Book::class, 'user_book')
+            ->withTimestamps()
+            ->orderByPivot('created_at', 'desc');
+    }
+
+    public function hasFavorited(Book $book): bool
+    {
+        return $this->favoriteBooks()->where('book_id', $book->id)->exists();
+    }
+
+    public function addToFavorites(Book $book): void
+    {
+        $this->favoriteBooks()->syncWithoutDetaching($book->id);
+    }
+
+    public function removeFromFavorites(Book $book): void
+    {
+        $this->favoriteBooks()->detach($book->id);
     }
 }
