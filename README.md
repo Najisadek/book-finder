@@ -12,6 +12,7 @@ A RESTful Laravel API for searching, saving, and managing favorite books using t
 - ✅ Pagination support
 - ✅ RESTful API design
 - ✅ Unit tests
+- ✅ Swagger Documentation
 
 ## 📋 Requirements
 
@@ -63,7 +64,7 @@ php artisan admin:create
 php artisan serve
 ```
 
-The API will be available at `http://localhost:8000`
+The API will be available at `http://127.0.0.1:8000`
 
 ## 📚 API Documentation
 
@@ -87,8 +88,8 @@ POST /api/login
 Content-Type: application/json
 
 {
-  "email": "john@example.com",
-  "password": "password123"
+  "email": "naji@sadek.site",
+  "password": "password"
 }
 
 Response:
@@ -98,7 +99,7 @@ Response:
 }
 ```
 
-For more details navigate to `http://localhost:8000/api/documentation`
+For more documentation details navigate to `http://127.0.0.1:8000/api/documentation`
 
 ## 🧪 Testing
 ```bash
