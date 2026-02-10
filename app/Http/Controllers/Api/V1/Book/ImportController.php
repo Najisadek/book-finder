@@ -160,9 +160,9 @@ final class ImportController extends ApiController
             return $this->notFound('Book not found in Google Books API');
         }
 
-        $transformed = $this->googleService->transformToSimplified([$bookData])[0];
-
         try {
+            $transformed = $this->googleService->transformToSimplified([$bookData])[0];
+
             $book = DB::transaction(function () use ($transformed, $googleBooksId) {
                 return Book::create([
                     'google_books_id' => $googleBooksId,
@@ -179,7 +179,7 @@ final class ImportController extends ApiController
             
         } catch (\Exception $e) {
 
-            return $this->error('Failed to import book', errors:[
+            return $this->error('Failed to import book', statusCode: 500, errors:[
                 'error' => config('app.debug') ? $e->getMessage() : 'An unexpected error occurred',
             ]);
         }
