@@ -104,7 +104,7 @@ For more documentation details navigate to `http://127.0.0.1:8000/api/documentat
 ## 🧪 Testing
 ```bash
 php artisan test
-php artisan test --filter BookControllerTest
+php artisan test --filter ImportBookTest
 ```
 
 ## 👨‍💻 Author
